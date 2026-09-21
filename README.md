@@ -451,7 +451,7 @@ LLM
 This enables future integration with real perception and robot feedback.
 
 ---
-
+<!-- 
 # Current Limitations
 
 This repository is currently a prototype.
@@ -474,9 +474,9 @@ It does **not yet** provide:
 * Navigation stack integration
 * G1 hardware integration
 * VLA policies
-* Reinforcement-learning-based skills
+* Reinforcement-learning-based skills -->
 
-These are planned extensions.
+<!-- These are planned extensions.
 
 ---
 
@@ -573,7 +573,7 @@ Classical Robot Control
 
 The project is designed around a key principle:
 
-> **Foundation models provide semantic reasoning and task-level intelligence, while classical robotics provides reliable physical execution.**
+> **Foundation models provide semantic reasoning and task-level intelligence, while classical robotics provides reliable physical execution.** -->
 
 ---
 
