@@ -23,7 +23,7 @@ class ToolExecutor:
 
     def validate(self, tool_name, arguments):
 
-        if tool_name in ["detect", "grasp"]:
+        if tool_name in ["detect", "grasp", "place"]:
 
             object_id = arguments.get("object_id")
 
@@ -33,6 +33,93 @@ class ToolExecutor:
                     "valid": False,
                     "reason": (
                         f"Unknown object: {object_id}"
+                    )
+                }
+
+        # Detect validation
+        if tool_name == "detect":
+
+            object_id = arguments["object_id"]
+
+            obj = self.world.get_object(object_id)
+
+            if not obj.visible:
+                return {
+                    "valid": False,
+                    "reason": f"{object_id} is not visible"
+                }
+
+            if obj.location != self.world.robot["location"]:
+                return {
+                    "valid": False,
+                    "reason": (
+                        f"Robot is in {self.world.robot['location']} "
+                        f"but {object_id} is in {obj.location}"
+                    )
+                }
+
+        # Grasp validation
+    # --------------------------------
+
+        if tool_name == "grasp":
+
+            object_id = arguments["object_id"]
+
+            obj = self.world.get_object(object_id)
+
+            if not obj.visible:
+                return {
+                    "valid": False,
+                    "reason": f"{object_id} is not visible"
+                }
+
+            if not obj.graspable:
+                return {
+                    "valid": False,
+                    "reason": f"{object_id} is not graspable"
+                }
+
+            if obj.location != self.world.robot["location"]:
+                return {
+                    "valid": False,
+                    "reason": (
+                        f"Robot is in {self.world.robot['location']} "
+                        f"but {object_id} is in {obj.location}"
+                    )
+                }
+
+            if self.world.robot["holding"] is not None:
+                return {
+                    "valid": False,
+                    "reason": (
+                        f"Robot is already holding "
+                        f"{self.world.robot['holding']}"
+                    )
+                }
+
+        # --------------------------------
+        # Place validation
+        # --------------------------------
+
+        if tool_name == "place":
+
+            object_id = arguments["object_id"]
+            destination = arguments["location"]
+
+            if self.world.robot["holding"] != object_id:
+                return {
+                    "valid": False,
+                    "reason": (
+                        f"Robot is not holding {object_id}"
+                    )
+                }
+
+            if self.world.robot["location"] != destination:
+                return {
+                    "valid": False,
+                    "reason": (
+                        f"Robot is in {self.world.robot['location']} "
+                        f"but destination is {destination}"
                     )
                 }
 
